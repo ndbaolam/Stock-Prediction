@@ -28,10 +28,10 @@ def upload_local_directory_to_minio(minio_client: Minio, local_path, bucket_name
         file_path=local_file
       )
 
-def upload_folder_to_minio(folder_path="batch_layer/storage", overwrite=True):
+def upload_folder_to_minio(folder_path="data", overwrite=True):
   """Upload folder to minio bucket
   Args:
-      folder_path (str, optional): Path to folder to be uploaded. Defaults to "batch_layer/storage".
+      folder_path (str, optional): Path to folder to be uploaded. Defaults to "data".
       overwrite (bool, optional): If true, overwrite existed object. Defaults to True
   """
   if not os.path.exists(folder_path):
