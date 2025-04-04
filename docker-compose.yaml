@@ -1,4 +1,26 @@
 services:
+  spark-master:    
+    image: bitnami/spark:latest
+    hostname: spark-master
+    container_name: spark-master    
+    ports:
+      - "8080:8080" #Port UI: 9090
+      - "7077:7077"
+    environment:
+      SPARK_MODE: master
+    
+  spark-worker:
+    image: bitnami/spark:latest
+    hostname: spark-worker
+    container_name: spark-worker    
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_MASTER_URL: spark://spark-master:7077
+
   minio:
     image: minio/minio:latest
     container_name: minio
