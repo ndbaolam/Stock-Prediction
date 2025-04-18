@@ -38,3 +38,8 @@ source venv/bin/activate
 
 pip install -r requirements.txt
 ```
+
+- Run Docker containers
+```sh
+docker netowrk create stock_default
+```

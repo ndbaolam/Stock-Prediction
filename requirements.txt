@@ -5,3 +5,5 @@ dotenv==1.1.0
 pyspark==3.5.5
 spark==0.2.1
 py4j==0.10.9.7
+apache-airflow-providers-apache-spark==5.1.1
+grpcio-status==1.71.0
