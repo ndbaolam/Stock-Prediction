@@ -1,5 +1,6 @@
 from utils.load_env import env
 from minio import Minio
+from minio.error import S3Error
 import os
 import glob
 
@@ -65,3 +66,9 @@ def upload_folder_to_minio(folder_path="data", overwrite=True):
     print(f"Successfully uploaded {folder_path} to MinIO bucket {folder_name}")
   except Exception as e:
     print(e)
+
+if __name__ == "__main__":
+  try:
+    upload_folder_to_minio()
+  except S3Error as exc:
+    print("error occurred.", exc)

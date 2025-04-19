@@ -20,22 +20,3 @@ services:
       SPARK_WORKER_CORES: 2
       SPARK_WORKER_MEMORY: 1g
       SPARK_MASTER_URL: spark://spark-master:7077
-
-  minio:
-    image: minio/minio:latest
-    container_name: minio
-    hostname: minio
-    ports:
-      - "9000:9000" #Web UI
-      - "9001:9001"
-    env_file:
-      - .env
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    volumes:
-      - minio_data:/data    
-    command: server /data --console-address ":9001"        
-
-volumes:
-  minio_data:
