@@ -176,9 +176,7 @@ services:
 #Kafka Setup
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
+    container_name: zookeeper    
     healthcheck:
       test: echo srvr | nc zookeeper 2181 || exit 1
       start_period: 10s
@@ -229,9 +227,7 @@ services:
     container_name: schema-registry
     depends_on:
       broker:
-        condition: service_healthy
-    ports:
-      - "8081:8081"
+        condition: service_healthy    
     healthcheck:
       start_period: 10s
       interval: 10s

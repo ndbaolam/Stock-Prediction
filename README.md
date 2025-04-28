@@ -44,28 +44,51 @@ pip install -r requirements.txt
 docker netowrk create stock_default
 ```
 
-## Trino
+## Port using on Localhost
+- Minio: 9000, 9001
+- Trino: 8081
+- Superset: 8088
+- Airflow Web Server: 8080
+- Broker: 9092, 9101
+- Control Center: 9021
+- Flower: 5555
+
+## Trino 474
 ```sh
-docker compose -f serving/data-lake-compose.yaml -d
+docker compose -f serving/trino/docker-compose.yaml up -d
+
 docker exec -it trino bash
+
 trino --server localhost:8080 --catalog stock
 ```
 - Access [Minio UI](http://localhost:9001)
-- Trino 474
+
+- To upload file to Minio:
+```sh
+python utils/upload_to_minio.py <folder_path>
+```
+
 ```sql
 CREATE SCHEMA IF NOT EXISTS <schema_name>
 WITH (location = 's3://<bucket_name>/');
 
 CREATE TABLE IF NOT EXISTS stock.<schema_name>.<table_name> (
-  datetime DATE,
+  formatted_timestamp TIMESTAMP,
   open DOUBLE,
   high DOUBLE,
   low DOUBLE,
   close DOUBLE,
-  volume DOUBLE
+  volume DOUBLE,
+  ticket_name VARCHAR
 )
 WITH (
   format = 'PARQUET',
   external_location = 's3://<bucket_name>/'
 );
 ```
+
+## SuperSet
+```sh
+docker compose -f serving/superset/docker-compose.yaml up -d
+```
+- Access [Minio UI](http://localhost:8088)

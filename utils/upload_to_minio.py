@@ -68,11 +68,13 @@ def upload_folder_to_minio(folder_path="data", overwrite=True):
       bucket_name=folder_name,
       minio_path='',
       overwrite=overwrite
-    )
+    )    
 
     print(f"✅ Successfully uploaded {folder_path} to MinIO bucket '{folder_name}'")
   except Exception as e:
     print("❌ Error occurred:", e)
+  finally: 
+    minio_client = None
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Upload a folder to MinIO bucket.")
