@@ -43,3 +43,29 @@ pip install -r requirements.txt
 ```sh
 docker netowrk create stock_default
 ```
+
+## Trino
+```sh
+docker compose -f serving/data-lake-compose.yaml -d
+docker exec -it trino bash
+trino --server localhost:8080 --catalog stock
+```
+- Access [Minio UI](http://localhost:9001)
+- Trino 474
+```sql
+CREATE SCHEMA IF NOT EXISTS <schema_name>
+WITH (location = 's3://<bucket_name>/');
+
+CREATE TABLE IF NOT EXISTS stock.<schema_name>.<table_name> (
+  datetime DATE,
+  open DOUBLE,
+  high DOUBLE,
+  low DOUBLE,
+  close DOUBLE,
+  volume DOUBLE
+)
+WITH (
+  format = 'PARQUET',
+  external_location = 's3://<bucket_name>/'
+);
+```

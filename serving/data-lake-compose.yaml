@@ -66,8 +66,8 @@ services:
     container_name: minio
     hostname: minio
     ports:
-      - "9000:9000" #Web UI
-      - "9001:9001"
+      - "9000:9000" #For API request
+      - "9001:9001" #For Web UI
     env_file:
       - ../.env
     environment:
