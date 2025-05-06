@@ -41,7 +41,7 @@ pip install -r requirements.txt
 
 - Run Docker containers
 ```sh
-docker netowrk create stock_default
+docker network create stock_default
 ```
 
 ## Port using on Localhost
