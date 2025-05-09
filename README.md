@@ -62,6 +62,7 @@ docker exec -it trino bash
 trino --server localhost:8080 --catalog stock
 ```
 - Access [Minio UI](http://localhost:9001)
+- Credential: `minioadmin:minioadmin`
 
 - To upload file to Minio:
 ```sh
@@ -73,17 +74,17 @@ CREATE SCHEMA IF NOT EXISTS <schema_name>
 WITH (location = 's3://<bucket_name>/');
 
 CREATE TABLE IF NOT EXISTS stock.<schema_name>.<table_name> (
-  formatted_timestamp TIMESTAMP,
+  formatted_timestamp TIMESTAMP,  
   open DOUBLE,
   high DOUBLE,
   low DOUBLE,
   close DOUBLE,
   volume DOUBLE,
-  ticket_name VARCHAR
+  ticker VARCHAR
 )
 WITH (
   format = 'PARQUET',
-  external_location = 's3://<bucket_name>/'
+  external_location = 's3://<bucket_name>/'  
 );
 ```
 
@@ -91,4 +92,8 @@ WITH (
 ```sh
 docker compose -f serving/superset/docker-compose.yaml up -d
 ```
-- Access [Minio UI](http://localhost:8088)
+- Access [SuperSet](http://localhost:8088)
+- Credential: `admin:admin`
+
+- Superset UI → Settings → Data → + Database → SQLAlchemy URI: `trino://<username>:<password>@<host>:<port>/<catalog>/<schema>`
+``trino://admin@host.docker.internal:8081/stock/market``

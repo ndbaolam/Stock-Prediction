@@ -19,6 +19,8 @@ services:
       POSTGRES_USER: hive
       POSTGRES_PASSWORD: hive
       POSTGRES_DB: metastore
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
     networks:
       - data_lake
 
@@ -72,15 +74,12 @@ services:
     volumes:
       - minio_data:/data    
     networks:
-      - stock_default
       - data_lake
     command: server /data --console-address ":9001"        
 
 volumes:
-  minio_data:
+  minio_data:  
+  postgres-data:
 
-networks:
-  stock_default:
-    external:
-      true
+networks:  
   data_lake:

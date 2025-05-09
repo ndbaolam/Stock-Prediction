@@ -9,8 +9,8 @@ if __name__ == "__main__":
 
   df = spark.read_data(file)
 
-  df = df.withColumn("ticket_name", get_basename(F.input_file_name()))
-  window_spec = Window.partitionBy(F.col("ticket_name")).orderBy(F.col("ticket_name"))
+  df = df.withColumn("ticker", get_basename(F.input_file_name()))
+  window_spec = Window.partitionBy(F.col("ticker")).orderBy(F.col("ticker"))
 
   df = df.withColumn("price_change", F.col("close") - F.lag("close").over(window_spec)) \
     .withColumn("daily_return", F.col("price_change") / F.lag("close").over(window_spec)) \
@@ -42,3 +42,5 @@ if __name__ == "__main__":
     .drop("datetime")
 
   spark.write_data(df=df, path="data/processed/D1/")
+  
+  spark.stop()

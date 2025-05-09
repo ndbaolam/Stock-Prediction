@@ -10,7 +10,7 @@ services:
     container_name: superset_cache
     restart: unless-stopped
     volumes:
-      - redis:/data
+      - redis:/data    
 
   db:
     env_file:
@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     volumes:
       - db_home:/var/lib/postgresql/data
-      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d    
 
   superset:
     env_file:
@@ -41,7 +41,7 @@ services:
     depends_on:
       superset-init:
         condition: service_completed_successfully
-    volumes: *superset-volumes
+    volumes: *superset-volumes    
     environment:
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
 
@@ -60,7 +60,7 @@ services:
       redis:
         condition: service_started
     user: "root"
-    volumes: *superset-volumes
+    volumes: *superset-volumes    
     healthcheck:
       disable: true
     environment:
@@ -81,7 +81,7 @@ services:
       superset-init:
         condition: service_completed_successfully
     user: "root"
-    volumes: *superset-volumes
+    volumes: *superset-volumes    
     healthcheck:
       test:
         [
@@ -105,7 +105,7 @@ services:
       superset-init:
         condition: service_completed_successfully
     user: "root"
-    volumes: *superset-volumes
+    volumes: *superset-volumes    
     healthcheck:
       disable: true
     environment:

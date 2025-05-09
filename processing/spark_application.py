@@ -72,3 +72,9 @@ class SparkApplication():
       .save(path)
     except Exception as e:
       logging.error(e)
+      
+  def stop(self) -> None:
+    """Stop the Spark session
+    """
+    self.spark.stop()
+    logging.info("Spark session stopped.")
