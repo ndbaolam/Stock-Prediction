@@ -57,7 +57,7 @@ class SparkApplication():
     """
     pass
 
-  def write_data(self, df: DataFrame, path) -> None:
+  def write_data(self, df: DataFrame, path, partition_by: None) -> None:
     """Write DataFrame to Parquet formatted file
 
     Args:
@@ -65,11 +65,15 @@ class SparkApplication():
         path (str): path to stored
     """
     try:
-      df.write \
+      writer = df.write \
       .format("parquet") \
       .option("compression", "snappy") \
-      .mode("overwrite") \
-      .save(path)
+      .mode("overwrite")
+      
+      if partition_by:
+        writer = writer.partitionBy(partition_by)
+        
+      writer.save(path)
     except Exception as e:
       logging.error(e)
       

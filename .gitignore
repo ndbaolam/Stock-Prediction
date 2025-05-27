@@ -4,3 +4,5 @@ venv
 .env
 data/*
 airflow/logs/*
+/data
+/models

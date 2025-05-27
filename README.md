@@ -6,13 +6,13 @@
 ## Architecture
 <img src="./images/architecture.png"/>
 
-- Follow the Lambda Architecture
-
 ## Techonologies
-- Minio for Object Storage
-- Apache Spark, Spark Streaming for data processing
-- Apache Kafka for real-time data ingestion
-- Apache Airflow for job scheduling
+- Minio: Object Storage
+- Apache Spark, Spark Streaming: Big data processing
+- Apache Kafka: Message queue, real-time data ingestion
+- Apache Airflow: Job scheduling
+- Trino: Distributed Query Engine
+- SuperSet: visualization
 
 ## Prerequisites
 - Python, Docker, Docker Compose, Ubuntu
@@ -57,9 +57,7 @@ docker network create stock_default
 ```sh
 docker compose -f serving/trino/docker-compose.yaml up -d
 
-docker exec -it trino bash
-
-trino --server localhost:8080 --catalog stock
+docker exec -it trino trino --server localhost:8080 --catalog stock
 ```
 - Access [Minio UI](http://localhost:9001)
 - Credential: `minioadmin:minioadmin`
@@ -70,21 +68,31 @@ python utils/upload_to_minio.py <folder_path>
 ```
 
 ```sql
-CREATE SCHEMA IF NOT EXISTS <schema_name>
-WITH (location = 's3://<bucket_name>/');
+-- Example
+CREATE SCHEMA IF NOT EXISTS stock.market
+WITH (location = 's3://processed/');
 
-CREATE TABLE IF NOT EXISTS stock.<schema_name>.<table_name> (
-  formatted_timestamp TIMESTAMP,  
+CREATE TABLE IF NOT EXISTS stock.market.daily (
   open DOUBLE,
   high DOUBLE,
   low DOUBLE,
   close DOUBLE,
   volume DOUBLE,
-  ticker VARCHAR
+  ticket VARCHAR,
+  price_change DOUBLE,
+  daily_return DOUBLE,
+  log_return DOUBLE,
+  VMA DOUBLE,
+  vol_change DOUBLE,
+  TR DOUBLE,
+  SMA DOUBLE,
+  RSI DOUBLE,
+  datetime TIMESTAMP,
+  is_weekday BOOLEAN
 )
 WITH (
   format = 'PARQUET',
-  external_location = 's3://<bucket_name>/'  
+  external_location = 's3://processed/'
 );
 ```
 
@@ -95,5 +103,5 @@ docker compose -f serving/superset/docker-compose.yaml up -d
 - Access [SuperSet](http://localhost:8088)
 - Credential: `admin:admin`
 
-- Superset UI → Settings → Data → + Database → SQLAlchemy URI: `trino://<username>:<password>@<host>:<port>/<catalog>/<schema>`
+- Superset UI → Settings → Data → Trino → URI: 
 ``trino://admin@host.docker.internal:8081/stock/market``
